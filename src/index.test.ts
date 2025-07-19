@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { RemoteConfiguration } from "./config";
+import * as z from "zod/v4-mini";
 
 describe("initializeRemoteConfig", () => {
   it("should initialize remote config", async () => {
@@ -12,14 +13,14 @@ describe("initializeRemoteConfig", () => {
       json: async () => mockJson,
     });
 
+    const schema = z.object({
+      name: z.string(),
+      version: z.string(),
+    });
+
     const remote = RemoteConfiguration.create({
       url: "https://example.com/config.json",
-      validate: (data) => {
-        return data as {
-          name: string;
-          version: string;
-        };
-      },
+      validate: schema,
     });
     const config = await remote.initialize();
     expect(config).toEqual({

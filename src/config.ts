@@ -17,11 +17,11 @@ export class RemoteConfiguration<U> {
   }
 
   public async initialize(): Promise<U> {
-    const config = await this.loadConfig();
+    const config = await this.fetchConfig();
     return this.validateConfig(config);
   }
 
-  private async loadConfig(): Promise<any> {
+  private async fetchConfig(): Promise<any> {
     try {
       const response = await fetch(this.options.url);
       return await response.json();
@@ -31,11 +31,12 @@ export class RemoteConfiguration<U> {
   }
 
   private validateConfig(config: any): U {
-    if (this.options.validate) {
-      if (typeof this.options.validate === "function") {
-        return this.options.validate(config);
+    const validate = this.options.validate;
+    if (validate) {
+      if (typeof validate === "function") {
+        return validate(config);
       }
-      return this.options.validate.parse(config);
+      return validate.parse(config);
     }
     return config;
   }
