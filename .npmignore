@@ -1,0 +1,27 @@
+# Ignore source files and config not needed in the package
+src/
+tsconfig.json
+tsup.config.ts
+.vscode/
+node_modules/
+*.test.ts
+*.spec.ts
+
+# Ignore development-related files
+.DS_Store
+*.log
+.env
+.env.*
+.npmrc
+
+# Ignore project metadata
+.git
+.github
+.idea
+*.md
+
+# Testing
+*.test.ts
+*.spec.ts
+vitest.config.ts
+coverage/
